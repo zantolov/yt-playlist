@@ -1,22 +1,26 @@
-<a href="./"><img src="./images/headset.png"/></a>
-
 <h1>Playlist #<span id="playlist-id"></span></h1>
 
 <div class="row">
-    <div id="player-container" class="col-md-9">
-
-    </div>
-    <div id="playlist-container" class="col-md-3">
-        <h2>Playlist</h2>
-        <input type='text' class="form-control input-search" id='youtube-video' placeholder='paste video url'>
-        <ul id="playlist"></ul>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
+    <div id="search-container">
         <input autocomplete="off" type='text' class="form-control input-search" id='search'
                placeholder='Start searching for YouTube videos'>
+
+        <div id="clear-results"><i class="fa fa-2x fa-times"></i></div>
         <ul id="search-results">
         </ul>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-9">
+        <div id="player-container">
+
+        </div>
+        <input type='text' class="form-control input-search" id='youtube-video' placeholder='paste video url'>
+    </div>
+
+    <div id="playlist-container" class="col-md-3">
+        <h2>Playlist</h2>
+        <ul id="playlist"></ul>
     </div>
 </div>

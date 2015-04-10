@@ -12,6 +12,11 @@ application = {
     base: 'https://yt-playlist.firebaseio.com/',
 
     init: function () {
+
+        $.ajaxSetup({
+            cache: false
+        });
+
         var self = this
         this.url = new Url;
 
@@ -33,10 +38,31 @@ application = {
 
     setupSearch: function () {
         var self = this;
-        $("#search").keyup(function () {
-            var search_input = $(this).val();
-            var keyword = encodeURIComponent(search_input);
-// Youtube API
+        var searchInput = $("#search");
+
+        function clearResults() {
+            $("#search-results").html('');
+        }
+
+        $("#clear-results").on('click', function () {
+            clearResults();
+        });
+
+        searchInput.keyup(function () {
+            var searchValue = $(this).val();
+
+            if (searchValue.length < 3) {
+                clearResults();
+                return;
+            }
+
+            if (!searchValue || searchValue == '') {
+                clearResults();
+                return;
+            }
+
+            var keyword = encodeURIComponent(searchValue);
+            // Youtube API
             var yt_url = 'http://gdata.youtube.com/feeds/api/videos?q=' + keyword + '&format=5&max-results=5&v=2&alt=jsonc';
 
             $.ajax
@@ -45,7 +71,7 @@ application = {
                 url: yt_url,
                 dataType: "jsonp",
                 success: function (response) {
-                    $("#search-results").html('');
+                    clearResults();
                     if (response.data.items) {
                         $.each(response.data.items, function (i, data) {
                             createResultEntry(data)
@@ -72,14 +98,15 @@ application = {
              "<div class=\"search-result-title\">" + video_title + "</div>" +
              "</li>";*/
             var final = "<li class=\"result-item\" data-id=\"" + video_id + "\"\\>" +
-                "<div class='col-sm-7'><div class=\"search-result-image\"><img src=\"" + video_image + "\"></div></div>" +
-                "<div class='col-sm-5'><span class=\"search-result-title\">" + video_title + "</span></div>" +
+                "<div class=\"search-result-image\"><img src=\"" + video_image + "\"></div></div>" +
+                "<div class=\"search-result-title\">" + video_title + "</div>" +
                 "</li>";
 
             $("#search-results").append(final);
         }
 
-        $("body").on("click", ".result-item", function () {
+        $("body").on("click", ".result-item:not(.item-added)", function () {
+            $(this).addClass('item-added');
             var code = $(this).attr('data-id');
             if (code) {
                 self.addToQueue(code);
@@ -89,12 +116,57 @@ application = {
 
     hashChanged: function (hash) {
         console.log(hash);
+
+        function Route(regex, action) {
+            this.regex = regex;
+            this.action = action;
+
+            this.check = function (url) {
+                console.log('checking ' + url);
+                console.log(url.match(this.regex));
+            }
+        }
+
+        var routes = {
+
+            init: function () {
+                console.log(this);
+                this.array.push(new Route(/#join/, 'joinAction'));
+                this.array.push(new Route(/#new/, 'newAction'));
+                this.array.push(new Route(/#playlist/, 'playlistAction'));
+            },
+
+            array: []
+        };
+
+        routes.init();
+
+        console.log(routes.array);
+
+        for (var i = 0; i < routes.array.length; i++) {
+            if (routes.array[i].check(hash)) {
+                console.log('OK ' + routes.action);
+            }
+        }
+
+        if (hash.match(/#join/)) {
+            console.log('regex match join')
+        } else if (hash.match(/#new/)) {
+            console.log('regex match new')
+        } else if (hash.match(/#playlist/)) {
+            console.log('regex match playlist')
+        }
+
+
         switch (hash) {
             case '#join':
                 this.joinAction();
                 break;
             case '#new':
                 this.newAction();
+                break;
+            case '#playlist':
+                this.playlistAction();
                 break;
         }
     },
@@ -118,6 +190,11 @@ application = {
                 self.loadPlaylist(id);
             }
         });
+    },
+
+    playlistAction: function () {
+        var u = new Url;
+        console.log(u);
     },
 
     loadPlaylist: function (id) {
@@ -163,21 +240,35 @@ application = {
         }
     },
 
+    createPlaylistView: function () {
+        var parent = $("#playlist");
+        var self = this;
+
+        parent.html('');
+        for (var i = 0; i < this.queue.length; i++) {
+            $('<li/>').addClass('playlist-item').attr({"data-id": this.queue[i]}).html('<img src="http://img.youtube.com/vi/' + this.queue[i] + '/default.jpg">').appendTo(parent);
+        }
+
+        $("body").on("click", ".playlist-item:not(.current)", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var code = $(this).attr('data-id');
+            self.playVideoByCode(code);
+        });
+    },
+
     addVideoToPlaylist: function (id) {
         console.log('addVideoToPlaylist');
-        var parent = $("#playlist");
-
-        //$('<li/>').text(id).appendTo(parent);
-
-        $('<li/>').html('<img src="http://img.youtube.com/vi/' + id + '/default.jpg">').appendTo(parent);
 
         this.queue.push(id);
         console.log(this.queue);
 
-        if (!this.isPlaying() && this.playerLoaded) {
-            console.log('play');
-            this.playNextVideoInQueue();
-        }
+        this.createPlaylistView();
+
+        //if (!this.isPlaying() && this.playerLoaded) {
+        //    console.log('play');
+        //    this.playNextVideoInQueue();
+        //}
 
         //$('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
     },
@@ -188,8 +279,7 @@ application = {
 
     addToQueue: function (data) {
         console.log(this.getPlaylistConn().push({id: data, action: this.actions.add}));
-        return;
-        return this.getPlaylistConn().push({id: data, action: this.actions.add});
+        //return this.getPlaylistConn().push({id: data, action: this.actions.add});
     },
 
     actions: {
@@ -269,25 +359,41 @@ application = {
         return state == YT.PlayerState.PLAYING;
     },
 
+    getIndexOf: function (key) {
+        var index = this.queue.indexOf(key);
+        return index;
+    },
+
     removeFromQueue: function (key) {
         console.log('removing ' + key);
-        var index = this.queue.indexOf(key);
+        var index = this.getIndexOf(key);
         if (index > -1) {
             this.queue.splice(index, 1);
         }
     },
 
     playVideoByCode: function (code) {
+        console.log('Playing video by code ' + code)
+        if (this.isPlaying()) {
+            this.player.stopVideo();
+        }
+
         this.player.loadVideoById(code);
         this.player.playVideo();
+
+        $('.playlist-item.current').removeClass('current');
+        console.log('.playlist-item[data-id="' + code + '"]');
+        $('.playlist-item[data-id="' + code + '"]').addClass('current');
+
+        this.current = code;
+        this.currentIndex = this.getIndexOf(this.current);
+
     },
 
     playNextVideoInQueue: function () {
         if (this.queue.length > 0) {
             var cur = this.queue[this.currentIndex + 1];
             this.playVideoByCode(cur);
-            this.current = cur;
-            this.currentIndex = this.currentIndex + 1;
         }
     }
 };

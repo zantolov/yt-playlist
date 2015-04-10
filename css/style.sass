@@ -25,7 +25,6 @@ a:hover
 
 #main
   h1
-    margin: 5% 0
     color: #999999
 
   h2
@@ -66,7 +65,7 @@ a:hover
 
 //search input field
 .input-search
-  margin: 50px 0 21px 0
+  margin: 10px 0 21px 0
   text-align: center
   height: 60px
   width: 100%
@@ -97,7 +96,6 @@ ul li
 
 //footer
 .description
-  margin-top: 50px
   text-align: center
   color: $gray
   transition: opacity 0.3s ease
@@ -119,27 +117,82 @@ ul li
   border-color: #ebccd1
 
 #playlist
+  margin: 0
+  padding: 0
   overflow: auto
   margin-top: 15px
+  height: 400px
+
+  .playlist-item
+    padding: 10px
+    &.current
+      border: 1px solid #DDD
+      background: #E5E5E5
+
+#logo
+  width: 50px
+
+#logo-container
+  margin-bottom: 0
 
 #search-results
-  background: $white
-  padding: 10px
-  width: 50%
+  padding: 0
+  margin: 0
+  background: rgba(255, 255, 255, .95)
   position: absolute
   z-index: 10000
-  margin: 0 30%
+  width: 100%
+  border: 4px solid #CCC
+  border-top: none
 
-.search-result-image
-  padding-bottom: 2px
-  border-bottom: solid 1px $gray
+  li
+    display: inline-block
+    width: 100%
+    height: 120px
+    position: relative
+    vertical-align: top
+    text-align: left
+    padding: 5px
+    border-bottom: 1px solid #e5e5e5
 
-.search-result-title
-  font-weight: 800
+    &.item-added
+      background: #D2ECCD
+
+    .search-result-image
+      display: inline-block
+      width: 100px
+      margin-right: 10px
+      img
+        margin: 0
+        max-width: 100%
+
+    .search-result-title
+      display: inline-block
+      font-weight: 800
+      height: 100%
+      color: #333
+      font-size: 150%
+
+    &:not(.item-added):hover
+      background: #EEE
+      cursor: pointer
 
 #player-container
-  z-index: -100
+  z-index: 900
 
+#search-container
+  width: 100%
+  position: relative
+  margin: 0 15px
+  margin-bottom: 20px
 
+  #clear-results
+    position: absolute
+    top: 15px
+    right: 15px
+    z-index: 9999999
+    cursor: pointer
 
-
+#search
+  padding-bottom: 0
+  margin-bottom: 0
