@@ -67,9 +67,13 @@ application = {
             var video_title = data.title;
             var video_image = getThumbnailByCode(data.id);
 
+            /*var final = "<li class=\"result-item\" data-id=\"" + video_id + "\"\\>" +
+             "<div class=\"search-result-image\"><img src=\"" + video_image + "\"></div>" +
+             "<div class=\"search-result-title\">" + video_title + "</div>" +
+             "</li>";*/
             var final = "<li class=\"result-item\" data-id=\"" + video_id + "\"\\>" +
-                "<div class=\"search-result-image\"><img src=\"" + video_image + "\"></div>" +
-                "<div class=\"search-result-title\">" + video_title + "</div>" +
+                "<div class='col-sm-7'><div class=\"search-result-image\"><img src=\"" + video_image + "\"></div></div>" +
+                "<div class='col-sm-5'><span class=\"search-result-title\">" + video_title + "</span></div>" +
                 "</li>";
 
             $("#search-results").append(final);
@@ -309,6 +313,9 @@ function onYouTubeIframeAPIReady() {
         height: '390',
         width: '640',
         video: null,
+        playerVars: {
+            wmode: "opaque"
+        },
         events: {
             'onReady': function () {
                 console.log('YT Ready');

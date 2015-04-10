@@ -4,15 +4,38 @@
 <head>
     <meta charset="utf-8">
 
-    <title>YT Playlist</title>
-    <meta name="description" content="The HTML5 Herald">
-    <meta name="author" content="SitePoint">
+    <title>Youtube 2Gman :: Share music you love</title>
+    <meta name="description" content="Youtube 2Gman :: Share music you love">
+    <meta name="author" content="Zoka & Loce">
+
+    <!--Favicons--->
+    <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/favicons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/images/favicons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/images/favicons/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/images/favicons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+
+    <!--End of favicons--->
 
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="css/styles.css?v=1.0">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    <link href='http://fonts.googleapis.com/css?family=Bree+Serif&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Bree+Serif&subset=latin,latin-ext' rel='stylesheet'
+          type='text/css'>
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -24,33 +47,38 @@
 </div>
 
 <div id="main" class="container text-center">
-        <h1>Youtube Playlist</h1>
+    <h1>YouTube<span class="red">2Gman</span></h1>
+    <a href="/"><img src="/images/headset.png"/></a>
 
-        <div class="row-centered row">
-            <div class="col-md-6 col-centered">
-                <a class="btn btn-success btn-lg" href="#new"><i class="fa fa-plus"></i> New Playlist</a>
-            </div>
+    <p class="description">Share music you love...</p>
+
+    <div class="col-sm-12">
+        <div class="col-sm-5 main-box">
+            <p>Create playlist</p>
+            <a class="main-button col-centered" href="#new">New Playlist</a>
         </div>
 
-        <div class="row-centered row">
-            <div class="col-md-12">
-                <span class="big">OR</span>
-            </div>
+        <div class="col-sm-2 main-box">
+            <div class="or">or</div>
         </div>
 
-        <div class="row row-centered">
-            <div class="col-md-4 col-centered">
-                <div class="input-group">
-                    <input type="text" autocomplete="off" id="join-id" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                        <a href="#join" class="btn btn-success">Join</a>
-                    </span>
-                </div>
-                <!-- /input-group -->
-            </div>
+        <div class="col-sm-5 main-box">
+            <input type="text" autocomplete="off" id="join-id" class="form-control input-search"
+                   placeholder="Search for group...">
+
+            <a href="#join" class="main-button col-centered ">Join</a>
         </div>
+    </div>
 
 </div>
+<footer>
+    <p class="description">Sharing music with friends since <a href="#">2015</a></p>
+
+    <div class="text-center">
+        <a href="#"><i class="fa fa-twitter fa-2x social-icon"></i></a>
+        <a href="#"><i class="fa fa-facebook fa-2x social-icon"></i></a>
+    </div>
+</footer>
 
 
 <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>

@@ -1,0 +1,118 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,700);
+body {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: #fafafa; }
+
+a:hover {
+  text-decoration: none;
+  color: #FFFFFF; }
+
+.red {
+  color: #dd2826; }
+
+#main h1 {
+  margin: 5% 0;
+  color: #999999; }
+#main h2 {
+  font-weight: 800; }
+#main p {
+  margin: 50px 0;
+  font-size: 1.6em;
+  color: #999; }
+#main img {
+  margin-top: 5px; }
+
+.main-box {
+  min-height: 100%; }
+  .main-box a:hover {
+    color: #FFFFFF;
+    text-decoration: none;
+    background-color: #dd2826; }
+
+.main-button {
+  color: #FFFFFF;
+  display: block;
+  margin: 30px 0;
+  background: #3498db;
+  text-align: center;
+  width: 200px;
+  height: 80px;
+  padding: 30px; }
+  .main-button:hover .main-button:visited .main-button:active {
+    color: #FFFFFF;
+    text-decoration: none;
+    background-color: #FF5746; }
+
+.input-search {
+  margin: 50px 0 21px 0;
+  text-align: center;
+  height: 60px;
+  width: 100%;
+  font-size: 1.5em;
+  color: #000;
+  border: none;
+  background: #e5e5e5; }
+
+.or {
+  margin: 80px 0;
+  font-size: 55px;
+  font-style: italic;
+  color: #999; }
+
+.row-centered {
+  text-align: center; }
+
+.col-centered {
+  display: inline-block;
+  float: none;
+  margin-right: -4px; }
+
+ul li {
+  margin: 2px 0;
+  list-style: none; }
+
+.description {
+  margin-top: 50px;
+  text-align: center;
+  color: #999;
+  transition: opacity 0.3s ease; }
+  .description a {
+    color: #4A9DF6;
+    text-decoration: none; }
+
+.social-icon {
+  color: #000; }
+  .social-icon:hover {
+    color: #dd2826; }
+
+.big {
+  font-size: 36px; }
+
+.alert-danger {
+  color: #FFFFFF;
+  background-color: #CC181E;
+  border-color: #ebccd1; }
+
+#playlist {
+  overflow: auto;
+  margin-top: 15px; }
+
+#search-results {
+  background: #FFFFFF;
+  padding: 10px;
+  width: 50%;
+  position: absolute;
+  z-index: 10000;
+  margin: 0 30%; }
+
+.search-result-image {
+  padding-bottom: 2px;
+  border-bottom: solid 1px #999; }
+
+.search-result-title {
+  font-weight: 800; }
+
+#player-container {
+  z-index: -100; }
+
+/*# sourceMappingURL=style.css.map */

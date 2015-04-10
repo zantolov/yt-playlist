@@ -1,0 +1,145 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,700)
+//transitions
+
+//colors
+$dark: #444444
+$light: #999999
+$white: #FFFFFF
+$red: #e74c3c
+$yt-red: #dd2826
+$gray: #999
+$blue: #3498db
+$green: #2ecc71
+$black: #000
+
+body
+  font-family: Roboto, "Helvetica Neue", sans-serif
+  background: #fafafa
+
+a:hover
+  text-decoration: none
+  color: $white
+
+.red
+  color: $yt-red
+
+#main
+  h1
+    margin: 5% 0
+    color: #999999
+
+  h2
+    font-weight: 800
+
+  p
+    margin: 50px 0
+    font-size: 1.6em
+    color: $gray
+
+  img
+    margin-top: 5px
+
+.main-box
+  min-height: 100%
+
+  a:hover
+    color: $white
+    text-decoration: none
+    background-color: $yt-red
+
+//button
+.main-button
+  color: $white
+  display: block
+  margin: 30px 0
+  background: $blue
+  text-align: center
+
+  width: 200px
+  height: 80px
+  padding: 30px
+
+  &:hover &:visited &:active
+    color: $white
+    text-decoration: none
+    background-color: #FF5746
+
+//search input field
+.input-search
+  margin: 50px 0 21px 0
+  text-align: center
+  height: 60px
+  width: 100%
+  font-size: 1.5em
+  color: #000
+  border: none
+  background: rgb(229, 229, 229)
+
+.or
+  margin: 80px 0
+  font-size: 55px
+  font-style: italic
+  color: $gray
+
+.row-centered
+  text-align: center
+
+.col-centered
+  display: inline-block
+  float: none
+
+  margin-right: -4px
+
+//playlists
+ul li
+  margin: 2px 0
+  list-style: none
+
+//footer
+.description
+  margin-top: 50px
+  text-align: center
+  color: $gray
+  transition: opacity 0.3s ease
+  a
+    color: #4A9DF6
+    text-decoration: none
+
+.social-icon
+  color: $black
+  &:hover
+    color: $yt-red
+
+.big
+  font-size: 36px
+
+.alert-danger
+  color: #FFFFFF
+  background-color: #CC181E
+  border-color: #ebccd1
+
+#playlist
+  overflow: auto
+  margin-top: 15px
+
+#search-results
+  background: $white
+  padding: 10px
+  width: 50%
+  position: absolute
+  z-index: 10000
+  margin: 0 30%
+
+.search-result-image
+  padding-bottom: 2px
+  border-bottom: solid 1px $gray
+
+.search-result-title
+  font-weight: 800
+
+#player-container
+  z-index: -100
+
+
+
+

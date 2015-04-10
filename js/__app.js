@@ -179,7 +179,7 @@ function createResultEntry(data) {
 
     var final = "<li class=\"result-item\" data-id=\"" + video_id + "\"\>" +
         "<div class=\"search-result-image\"><img src=\"" + video_image + "\"></div>" +
-        "<div class=\"search-result-title\">" + video_title + "</div>" +
+        "<span class=\"search-result-title\">" + video_title + "</span>" +
         "</li>";
 
     $("#search-results").append(final);
