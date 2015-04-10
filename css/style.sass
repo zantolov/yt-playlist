@@ -31,7 +31,6 @@ a:hover
     font-weight: 800
 
   p
-    margin: 50px 0
     font-size: 1.6em
     color: $gray
 
@@ -124,10 +123,41 @@ ul li
   height: 400px
 
   .playlist-item
+    position: relative
     padding: 10px
     &.current
       border: 1px solid #DDD
       background: #E5E5E5
+    &:hover
+      background: #EEE
+      cursor: pointer
+    .remove-item
+      padding: 5px 10px
+      background: #DDD
+      position: absolute
+      top: 5px
+      right: 5px
+      z-index: 99999
+      &:hover
+        color: red
+        cursor: pointer
+
+    .down-item
+      display: inline-block
+      position: absolute
+      right: 5px
+      top: 78px
+      background: #DDD
+      &:hover
+        color: #D40808
+    .up-item
+      display: inline-block
+      position: absolute
+      right: 5px
+      top: 44px
+      background: #DDD
+      &:hover
+        color: #D40808
 
 #logo
   width: 50px

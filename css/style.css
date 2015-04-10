@@ -15,7 +15,6 @@ a:hover {
 #main h2 {
   font-weight: 800; }
 #main p {
-  margin: 50px 0;
   font-size: 1.6em;
   color: #999; }
 #main img {
@@ -98,10 +97,40 @@ ul li {
   margin-top: 15px;
   height: 400px; }
   #playlist .playlist-item {
+    position: relative;
     padding: 10px; }
     #playlist .playlist-item.current {
       border: 1px solid #DDD;
       background: #E5E5E5; }
+    #playlist .playlist-item:hover {
+      background: #EEE;
+      cursor: pointer; }
+    #playlist .playlist-item .remove-item {
+      padding: 5px 10px;
+      background: #DDD;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      z-index: 99999; }
+      #playlist .playlist-item .remove-item:hover {
+        color: red;
+        cursor: pointer; }
+    #playlist .playlist-item .down-item {
+      display: inline-block;
+      position: absolute;
+      right: 5px;
+      top: 78px;
+      background: #DDD; }
+      #playlist .playlist-item .down-item:hover {
+        color: #D40808; }
+    #playlist .playlist-item .up-item {
+      display: inline-block;
+      position: absolute;
+      right: 5px;
+      top: 44px;
+      background: #DDD; }
+      #playlist .playlist-item .up-item:hover {
+        color: #D40808; }
 
 #logo {
   width: 50px; }

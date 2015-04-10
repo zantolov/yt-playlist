@@ -198,6 +198,11 @@ application = {
     },
 
     loadPlaylist: function (id) {
+        if (typeof(Storage) !== "undefined") {
+            localStorage.setItem("ytplaylist.lastPlaylistId", id);
+        }
+
+
         var self = this;
         this.loadPage('playlist.html', function () {
             self.setupSearch();
@@ -231,12 +236,17 @@ application = {
     handleChildAdded: function (snapshot) {
         var message = snapshot.val();
 
-        if (message.hasOwnProperty('id') &&
-            message.hasOwnProperty('action') &&
-            message.action == application.actions.add
-        ) {
-            application.addVideoToPlaylist(message.id);
-        } else {
+        if (message.hasOwnProperty('id') && message.hasOwnProperty('action')) {
+            if (message.action == application.actions.add) {
+                application.addVideoToPlaylist(message.id);
+            } else if (message.action == application.actions.remove) {
+                application.removeVideoFromPlaylist(message.id);
+            } else if (message.action == application.actions.moveDown) {
+                application.moveVideoDownInPlaylist(message.id);
+            } else if (message.action == application.actions.moveUp) {
+                application.moveVideoUpInPlaylist(message.id);
+            }
+
         }
     },
 
@@ -246,14 +256,48 @@ application = {
 
         parent.html('');
         for (var i = 0; i < this.queue.length; i++) {
-            $('<li/>').addClass('playlist-item').attr({"data-id": this.queue[i]}).html('<img src="http://img.youtube.com/vi/' + this.queue[i] + '/default.jpg">').appendTo(parent);
+            $('<li/>').addClass('playlist-item')
+                .attr({"data-id": this.queue[i]})
+                .html('<img src="http://img.youtube.com/vi/' + this.queue[i] + '/default.jpg">')
+                .append('<div class="remove-item" data-id="' + this.queue[i] + '"><i class="fa fa-trash"></i></div>')
+                .append('<div class="down-item" data-id="' + this.queue[i] + '"><i class="fa fa-2x fa-arrow-down"></i></div>')
+                .append('<div class="up-item" data-id="' + this.queue[i] + '"><i class="fa fa-2x fa-arrow-up"></i></div>')
+                .appendTo(parent);
         }
 
-        $("body").on("click", ".playlist-item:not(.current)", function (e) {
+        $('body').off('click.ytplaylist');
+        $("body").on("click.ytplaylist", ".playlist-item:not(.current)", function (e) {
             e.preventDefault();
             e.stopPropagation();
             var code = $(this).attr('data-id');
             self.playVideoByCode(code);
+        });
+
+        $("body").on("click.ytplaylist", ".playlist-item .remove-item", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var code = $(this).attr('data-id');
+            if (!confirm('Are you sure?')) {
+                return;
+            }
+            self.removeFromQueue(code);
+        });
+
+        $("body").on("click.ytplaylist", ".playlist-item .up-item", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var code = $(this).attr('data-id');
+            self.moveUp(code);
+        });
+
+        $("body").on("click.ytplaylist", ".playlist-item .down-item", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var code = $(this).attr('data-id');
+            self.moveDown(code);
         });
     },
 
@@ -282,9 +326,23 @@ application = {
         //return this.getPlaylistConn().push({id: data, action: this.actions.add});
     },
 
+    removeFromQueue: function (code) {
+        console.log(this.getPlaylistConn().push({id: code, action: this.actions.remove}));
+    },
+
+    moveUp: function (code) {
+        console.log(this.getPlaylistConn().push({id: code, action: this.actions.moveUp}));
+    },
+
+    moveDown: function (code) {
+        console.log(this.getPlaylistConn().push({id: code, action: this.actions.moveDown}));
+    },
+
     actions: {
         add: 1,
-        remove: 2
+        remove: 2,
+        moveUp: 3,
+        moveDown: 4
     },
 
     random: function () {
@@ -334,6 +392,7 @@ application = {
     },
 
     loadPage: function (page, callback) {
+        this.hideNotify();
         $.ajax({
             url: page,
             dataType: 'HTML'
@@ -364,12 +423,35 @@ application = {
         return index;
     },
 
-    removeFromQueue: function (key) {
+    switchPlaces: function (index1, index2) {
+        var temp = this.queue[index1];
+        this.queue[index1] = this.queue[index2];
+        this.queue[index2] = temp;
+    },
+
+    moveVideoUpInPlaylist: function (key) {
+        var index = this.getIndexOf(key);
+        if (index < this.queue.length && index > 1) {
+            this.switchPlaces(index, index - 1);
+        }
+        this.createPlaylistView();
+    },
+
+    moveVideoDownInPlaylist: function (key) {
+        var index = this.getIndexOf(key);
+        if (index > 0 && index < this.queue.length - 1) {
+            this.switchPlaces(index, index + 1);
+        }
+        this.createPlaylistView();
+    },
+
+    removeVideoFromPlaylist: function (key) {
         console.log('removing ' + key);
         var index = this.getIndexOf(key);
         if (index > -1) {
             this.queue.splice(index, 1);
         }
+        this.createPlaylistView();
     },
 
     playVideoByCode: function (code) {
@@ -400,6 +482,7 @@ application = {
 
 $(function () {
     application.init();
+    $("#last-playlist-id").html(localStorage.getItem("ytplaylist.lastPlaylistId"));
     application.hashChanged(window.location.hash);
 });
 
