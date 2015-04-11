@@ -56,13 +56,13 @@
 
 <div id="main" class="container text-center">
 
-    <div class="col-sm-12">
+    <div class="row">
         <div class="col-sm-5 main-box">
-            <br/>
-            <br/>
             <p>Create playlist</p>
-            <br/>
-            <a class="main-button col-centered" href="#new">New Playlist</a>
+            <input type="text" autocomplete="off" id="new-playlist-id" class="form-control input-search"
+                   placeholder="Playlist name">
+            <a class="main-button btn-block col-centered" id='new-playlist-trigger' href="javascript:void(0)">New Playlist</a>
+
         </div>
 
         <div class="col-sm-2 main-box">
@@ -70,16 +70,22 @@
         </div>
 
         <div class="col-sm-5 main-box">
+            <p>Join existing playlist</p>
             <input type="text" autocomplete="off" id="join-id" class="form-control input-search"
                    placeholder="Search for group...">
-            <div id="last-playlist-id"></div>
-
-            <a href="#join" class="main-button col-centered ">Join</a>
+            <a href="javascript:void(0)" id="join-trigger" class="main-button btn-block col-centered ">Join</a>
         </div>
+    </div>
+
+    <div class="description">
+        Last playlist loaded:
+        <span id="last-playlist-id"></span>
     </div>
 
 </div>
 <footer>
+
+
     <p class="description">Sharing music with friends since <a href="#">2015</a></p>
 
     <div class="text-center">
@@ -92,6 +98,7 @@
 <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
 <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="js/sha1.js"></script>
 <script src="js/url.min.js"></script>
 <script src="js/app.js"></script>
 </body>

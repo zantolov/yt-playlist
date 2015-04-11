@@ -1,26 +1,22 @@
-<h1>Playlist #<span id="playlist-id"></span></h1>
-
-<div class="row">
-    <div id="search-container">
-        <input autocomplete="off" type='text' class="form-control input-search" id='search'
-               placeholder='Start searching for YouTube videos'>
-
-        <div id="clear-results"><i class="fa fa-2x fa-times"></i></div>
-        <ul id="search-results">
-        </ul>
-    </div>
-</div>
-
+<h1>Playlist <span id="playlist-id"></span></h1>
 <div class="row">
     <div class="col-md-9">
+        <div id="search-container">
+            <input autocomplete="off" type='text' class="form-control input-search" id='search'
+                   placeholder='Start searching for YouTube videos'>
+
+            <div id="clear-results"><i class="fa fa-2x fa-times"></i></div>
+            <ul id="search-results">
+            </ul>
+        </div>
+
         <div id="player-container">
 
         </div>
-        <input type='text' class="form-control input-search" id='youtube-video' placeholder='paste video url'>
+        <input type='text' class="form-control input-search" id='youtube-video' placeholder='Paste direct Youtube video URL'>
     </div>
 
     <div id="playlist-container" class="col-md-3">
-        <h2>Playlist</h2>
         <ul id="playlist"></ul>
     </div>
 </div>

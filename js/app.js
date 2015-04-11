@@ -1,8 +1,23 @@
+function slugify(text) {
+    return text.toString().toLowerCase()
+        .replace(/\s+/g, '-')           // Replace spaces with -
+        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+        .replace(/^-+/, '')             // Trim - from start of text
+        .replace(/-+$/, '');            // Trim - from end of text
+}
+
+function Item(id, title) {
+    this.title = title;
+    this.id = id;
+}
+
 application = {
     con: null,
     url: null,
     playlistid: null,
     player: null,
+    routes: null,
     current: null,
     currentIndex: -1,
     playerLoaded: false,
@@ -12,6 +27,9 @@ application = {
     base: 'https://yt-playlist.firebaseio.com/',
 
     init: function () {
+
+        this.setupRoutes();
+        this.setupEvents();
 
         $.ajaxSetup({
             cache: false
@@ -34,6 +52,52 @@ application = {
                 }
             }, 100);
         }
+    },
+
+    setupRoutes: function () {
+        function Route(regex, action) {
+            this.regex = regex;
+            this.action = action;
+
+            this.check = function (url) {
+                return url.match(this.regex);
+            }
+        }
+
+        this.routes = {
+            init: function () {
+                this.array.push(new Route(/#join/, 'joinAction'));
+                this.array.push(new Route(/#new/, 'newAction'));
+                this.array.push(new Route(/#playlist-(\w+)/, 'playlistAction'));
+            },
+            array: []
+        };
+
+        this.routes.init();
+    },
+
+
+    setupEvents: function () {
+        var self = this;
+        $("#new-playlist-trigger").on('click.ytplaylist', function () {
+            self.newAction();
+        });
+
+        $("#new-playlist-id").keypress(function (e) {
+            if (e.keyCode == 13) {
+                self.newAction();
+            }
+        });
+
+        $("#join-id").keypress(function (e) {
+            if (e.keyCode == 13) {
+                window.location = '#playlist-' + $(this).val();
+            }
+        });
+
+        $("#join-trigger").on('click.ytplaylist', function (e) {
+            window.location = '#playlist-' + $("#join-id").val();
+        });
     },
 
     setupSearch: function () {
@@ -63,7 +127,7 @@ application = {
 
             var keyword = encodeURIComponent(searchValue);
             // Youtube API
-            var yt_url = 'http://gdata.youtube.com/feeds/api/videos?q=' + keyword + '&format=5&max-results=5&v=2&alt=jsonc';
+            var yt_url = 'http://gdata.youtube.com/feeds/api/videos?q=' + keyword + '&format=5&max-results=10&v=2&alt=jsonc';
 
             $.ajax
             ({
@@ -108,8 +172,9 @@ application = {
         $("body").on("click", ".result-item:not(.item-added)", function () {
             $(this).addClass('item-added');
             var code = $(this).attr('data-id');
+            var title = $(this).find('.search-result-title').text();
             if (code) {
-                self.addToQueue(code);
+                self.addToQueue(code, title);
             }
         })
     },
@@ -117,58 +182,32 @@ application = {
     hashChanged: function (hash) {
         console.log(hash);
 
-        function Route(regex, action) {
-            this.regex = regex;
-            this.action = action;
-
-            this.check = function (url) {
-                console.log('checking ' + url);
-                console.log(url.match(this.regex));
-            }
-        }
-
-        var routes = {
-
-            init: function () {
-                console.log(this);
-                this.array.push(new Route(/#join/, 'joinAction'));
-                this.array.push(new Route(/#new/, 'newAction'));
-                this.array.push(new Route(/#playlist/, 'playlistAction'));
-            },
-
-            array: []
-        };
-
-        routes.init();
-
-        console.log(routes.array);
+        var routes = this.routes;
 
         for (var i = 0; i < routes.array.length; i++) {
-            if (routes.array[i].check(hash)) {
-                console.log('OK ' + routes.action);
+            var route = routes.array[i];
+            var check = route.check(hash)
+            if (check) {
+                console.log('OK: ' + check);
+                var action = route.action;
+                console.log(typeof this[action]);
+                if (typeof this[action] === 'function') {
+                    this[action](check);
+                }
             }
         }
 
-        if (hash.match(/#join/)) {
-            console.log('regex match join')
-        } else if (hash.match(/#new/)) {
-            console.log('regex match new')
-        } else if (hash.match(/#playlist/)) {
-            console.log('regex match playlist')
-        }
-
-
-        switch (hash) {
-            case '#join':
-                this.joinAction();
-                break;
-            case '#new':
-                this.newAction();
-                break;
-            case '#playlist':
-                this.playlistAction();
-                break;
-        }
+        //switch (hash) {
+        //    case '#join':
+        //        this.joinAction();
+        //        break;
+        //    case '#new':
+        //        this.newAction();
+        //        break;
+        //    case '#playlist':
+        //        this.playlistAction();
+        //        break;
+        //}
     },
 
     connect: function (ref) {
@@ -177,31 +216,59 @@ application = {
         return this.con;
     },
 
-    newAction: function () {
-        var self = this;
-        id = this.random();
-        con = this.connect('');
+    checkIfPlaylistExists: function (id, callback) {
+        var con = this.connect('');
 
         con.child(id).once('value', function (snapshot) {
-            var exists = (snapshot.val() !== null);
+            callback(snapshot.val() !== null);
+        })
+    },
+
+    createPlaylist: function (id) {
+        this.playlistid = id;
+        console.log(this.getPlaylistConn().push({data: 'create'}));
+    },
+
+    newAction: function () {
+        var self = this;
+        var id = $("#new-playlist-id").val();
+
+        if (!id || id == '') {
+            this.notify('Enter wanted playlist name', 'danger');
+            return;
+        }
+        this.hideNotify();
+        id = slugify(id);
+
+        this.checkIfPlaylistExists(id, function (exists) {
+            console.log(exists);
             if (exists) {
-                self.newAction();
+                self.notify('Name is taken!', 'danger');
             } else {
-                self.loadPlaylist(id);
+                self.createPlaylist(id);
+                window.location = '#playlist-' + id;
             }
         });
     },
 
-    playlistAction: function () {
-        var u = new Url;
-        console.log(u);
+    playlistAction: function (data) {
+        var id = data[1]
+        var self = this;
+        console.log(id);
+        this.checkIfPlaylistExists(id, function (exists) {
+            if (exists) {
+                self.loadPlaylist(id)
+            } else {
+                self.notify('Playlist doesn\'t exists', 'danger');
+            }
+        });
+
     },
 
     loadPlaylist: function (id) {
         if (typeof(Storage) !== "undefined") {
             localStorage.setItem("ytplaylist.lastPlaylistId", id);
         }
-
 
         var self = this;
         this.loadPage('playlist.html', function () {
@@ -237,8 +304,8 @@ application = {
         var message = snapshot.val();
 
         if (message.hasOwnProperty('id') && message.hasOwnProperty('action')) {
-            if (message.action == application.actions.add) {
-                application.addVideoToPlaylist(message.id);
+            if (message.action == application.actions.add && message.hasOwnProperty('title')) {
+                application.addVideoToPlaylist(message.id, message.title);
             } else if (message.action == application.actions.remove) {
                 application.removeVideoFromPlaylist(message.id);
             } else if (message.action == application.actions.moveDown) {
@@ -256,12 +323,21 @@ application = {
 
         parent.html('');
         for (var i = 0; i < this.queue.length; i++) {
+            var id = this.queue[i].id;
+            var actions = $('<div/>').addClass('actions')
+                .append('<div class="remove-item" data-id="' + id + '"><i class="fa fa-trash"></i></div>')
+                .append('<div class="up-item" data-id="' + id + '"><i class="fa fa-2x fa-arrow-up"></i></div>')
+                .append('<div class="down-item" data-id="' + id + '"><i class="fa fa-2x fa-arrow-down"></i></div>');
+
+
+            var title = $('<div/>').addClass('item-title').text(this.queue[i].title);
+
+
             $('<li/>').addClass('playlist-item')
-                .attr({"data-id": this.queue[i]})
-                .html('<img src="http://img.youtube.com/vi/' + this.queue[i] + '/default.jpg">')
-                .append('<div class="remove-item" data-id="' + this.queue[i] + '"><i class="fa fa-trash"></i></div>')
-                .append('<div class="down-item" data-id="' + this.queue[i] + '"><i class="fa fa-2x fa-arrow-down"></i></div>')
-                .append('<div class="up-item" data-id="' + this.queue[i] + '"><i class="fa fa-2x fa-arrow-up"></i></div>')
+                .attr({"data-id": id})
+                .html('<img src="http://img.youtube.com/vi/' + id + '/default.jpg">')
+                .append(actions)
+                .append(title)
                 .appendTo(parent);
         }
 
@@ -301,12 +377,11 @@ application = {
         });
     },
 
-    addVideoToPlaylist: function (id) {
+    addVideoToPlaylist: function (id, title) {
         console.log('addVideoToPlaylist');
 
-        this.queue.push(id);
-        console.log(this.queue);
-
+        var item = new Item(id, title)
+        this.queue.push(item);
         this.createPlaylistView();
 
         //if (!this.isPlaying() && this.playerLoaded) {
@@ -321,8 +396,8 @@ application = {
         return this.con.child(this.playlistid);
     },
 
-    addToQueue: function (data) {
-        console.log(this.getPlaylistConn().push({id: data, action: this.actions.add}));
+    addToQueue: function (id, title) {
+        console.log(this.getPlaylistConn().push({id: id, title: title, action: this.actions.add}));
         //return this.getPlaylistConn().push({id: data, action: this.actions.add});
     },
 
@@ -419,27 +494,33 @@ application = {
     },
 
     getIndexOf: function (key) {
-        var index = this.queue.indexOf(key);
-        return index;
+
+        for (var i = 0; i < this.queue.length; i++) {
+            if (this.queue[i].id == key) {
+                return i;
+            }
+        }
     },
 
     switchPlaces: function (index1, index2) {
         var temp = this.queue[index1];
+        console.log('switching ' + index1 + ' ' + index2);
         this.queue[index1] = this.queue[index2];
         this.queue[index2] = temp;
     },
 
     moveVideoUpInPlaylist: function (key) {
         var index = this.getIndexOf(key);
-        if (index < this.queue.length && index > 1) {
+        if (index < this.queue.length && index >= 1) {
             this.switchPlaces(index, index - 1);
         }
         this.createPlaylistView();
     },
 
     moveVideoDownInPlaylist: function (key) {
+        console.log('moving down');
         var index = this.getIndexOf(key);
-        if (index > 0 && index < this.queue.length - 1) {
+        if (index >= 0 && index < this.queue.length - 1) {
             this.switchPlaces(index, index + 1);
         }
         this.createPlaylistView();
@@ -475,14 +556,18 @@ application = {
     playNextVideoInQueue: function () {
         if (this.queue.length > 0) {
             var cur = this.queue[this.currentIndex + 1];
-            this.playVideoByCode(cur);
+            this.playVideoByCode(cur.id);
         }
     }
 };
 
 $(function () {
     application.init();
-    $("#last-playlist-id").html(localStorage.getItem("ytplaylist.lastPlaylistId"));
+    var lastid = localStorage.getItem("ytplaylist.lastPlaylistId");
+    if (lastid) {
+        $("#last-playlist-id").html('<a href="#playlist-' + lastid + '">' + lastid + '</a>');
+    }
+
     application.hashChanged(window.location.hash);
 });
 
