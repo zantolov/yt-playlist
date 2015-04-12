@@ -79,7 +79,7 @@ application = {
             init: function () {
                 this.array.push(new Route(/#join/, 'joinAction'));
                 this.array.push(new Route(/#new/, 'newAction'));
-                this.array.push(new Route(/#playlist-(\w+)/, 'playlistAction'));
+                this.array.push(new Route(/#playlist-([\w+-]*)/, 'playlistAction'));
             },
             array: []
         };
@@ -557,7 +557,12 @@ application = {
 
     playNextVideoInQueue: function () {
         if (this.queue.length > 0) {
-            var cur = this.queue[this.currentIndex + 1];
+
+            var nextIndex = this.currentIndex + 1;
+            if (this.queue.length == nextIndex) { // Is this last video?
+                nextIndex = 0;
+            }
+            var cur = this.queue[nextIndex];
             this.playVideoByCode(cur.id);
         }
     }
