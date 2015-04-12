@@ -11,6 +11,7 @@ $gray: #999
 $blue: #3498db
 $green: #2ecc71
 $black: #000
+$light-gray: #E6E6E6
 
 body
   font-family: Roboto, "Helvetica Neue", sans-serif
@@ -40,6 +41,9 @@ a:hover
     color: $white
     text-decoration: none
     background-color: $yt-red
+
+.main-content-wrapper
+  margin-top: 80px
 
 //button
 .main-button
@@ -74,9 +78,27 @@ a:hover
 
 .or
   margin: 80px 0
-  font-size: 55px
+  font-size: 45px
   font-style: italic
-  color: $gray
+  color: $light-gray
+
+.or-line
+  span
+    display: inline-block
+
+  span:before, span:after
+    margin: 100px 0
+    border-top: 3px solid $light-gray
+    display: block
+    height: 1px
+    content: " "
+    width: 20%
+    position: absolute
+    left: 17%
+    top: 1.2em
+  span:after
+    right: 17%
+    left: auto
 
 .row-centered
   text-align: center
@@ -95,6 +117,8 @@ ul li
 //footer
 
 footer
+  margin-top: 70px
+  margin-bottom: 20px
   font-size: 14px
 
 .description
