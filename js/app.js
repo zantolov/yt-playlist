@@ -623,7 +623,7 @@ $(window).bind("load", function () {
     if (height > 0) {
         footer.css({
             'margin-top': height + 'px',
-            'bottom': 0 + 'px'
+            'bottom': 10 + 'px'
         });
     }
 });
