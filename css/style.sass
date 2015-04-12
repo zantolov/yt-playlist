@@ -31,11 +31,7 @@ a:hover
     font-weight: 800
 
   p
-    font-size: 1.6em
     color: $gray
-
-  img
-    margin-top: 5px
 
 .main-box
   min-height: 100%
@@ -56,6 +52,9 @@ a:hover
   width: 200px
   height: 80px
   padding: 30px
+
+  &.btn-block
+    width: 100%
 
   &:hover &:visited &:active
     color: $white
@@ -94,6 +93,10 @@ ul li
   list-style: none
 
 //footer
+
+footer
+  font-size: 14px
+
 .description
   text-align: center
   color: $gray
@@ -118,23 +121,35 @@ ul li
 #playlist-id
   color: #333
 
-#playlist
+#playlist-container
   background: #333
+  padding: 0
+  overflow: auto
+  height: 100vh
+
+#playlist
   margin: 0
   padding: 0
   overflow: auto
-  margin-top: 15px
-  max-height: 600px
 
   .playlist-item
     position: relative
-    padding: 10px
+    padding: 10px 0
+    overflow: hidden
     margin: 0
-    text-align: left
+    text-align: center
     border-bottom: 1px solid #292929
+    min-height: 100px
+
+    img
+      max-width: 100%
 
     .item-title
       color: #999
+      font-size: 14px
+      line-height: 100%
+      text-align: left
+      padding-right: 35px
 
     &.current, &:hover
       background: #222
@@ -147,18 +162,22 @@ ul li
       bottom: 0
       width: 40px
       color: #555
+      background: #151515
+      text-align: center
+      z-index: 150
+
       .remove-item, .down-item, .up-item
         padding: 5px
-        background: #222
         &:hover
           color: red
           cursor: pointer
 
 #logo
-  width: 50px
+  width: 30px
 
 #logo-container
   margin-bottom: 0
+  font-size: 24px
 
 #search-results
   padding: 0
@@ -171,11 +190,10 @@ ul li
   li
     display: inline-block
     width: 100%
-    height: 50px
     position: relative
     vertical-align: top
     text-align: left
-    padding: 5px
+    padding: 5px 0
     margin: 0
     border-left: 2px solid #DDD
     border-right: 2px solid #DDD
@@ -185,30 +203,30 @@ ul li
       background: #D2ECCD
 
     .search-result-image
-      display: inline-block
-      width: 35px
-      margin-right: 10px
+      text-align: center
+
       img
         margin: 0
+        width: 40px
         max-width: 100%
 
     .search-result-title
+      line-height: 100%
       display: inline-block
-      font-weight: 800
-      height: 100%
       color: #333
 
     &:not(.item-added):hover
-      background: #EEE
+      background: #E5E5E5
       cursor: pointer
 
 #player-container
   z-index: 900
+  max-height: 300px
+  width: 100%
 
 #search-container
   width: 100%
   position: relative
-  margin: 0 15px
   margin-bottom: 20px
 
   #clear-results

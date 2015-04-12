@@ -15,10 +15,7 @@ a:hover {
 #main h2 {
   font-weight: 800; }
 #main p {
-  font-size: 1.6em;
   color: #999; }
-#main img {
-  margin-top: 5px; }
 
 .main-box {
   min-height: 100%; }
@@ -36,6 +33,8 @@ a:hover {
   width: 200px;
   height: 80px;
   padding: 30px; }
+  .main-button.btn-block {
+    width: 100%; }
   .main-button:hover .main-button:visited .main-button:active {
     color: #FFFFFF;
     text-decoration: none;
@@ -69,6 +68,9 @@ ul li {
   margin: 2px 0;
   list-style: none; }
 
+footer {
+  font-size: 14px; }
+
 .description {
   text-align: center;
   color: #999;
@@ -93,21 +95,32 @@ ul li {
 #playlist-id {
   color: #333; }
 
-#playlist {
+#playlist-container {
   background: #333;
-  margin: 0;
   padding: 0;
   overflow: auto;
-  margin-top: 15px;
-  max-height: 600px; }
+  height: 100vh; }
+
+#playlist {
+  margin: 0;
+  padding: 0;
+  overflow: auto; }
   #playlist .playlist-item {
     position: relative;
-    padding: 10px;
+    padding: 10px 0;
+    overflow: hidden;
     margin: 0;
-    text-align: left;
-    border-bottom: 1px solid #292929; }
+    text-align: center;
+    border-bottom: 1px solid #292929;
+    min-height: 100px; }
+    #playlist .playlist-item img {
+      max-width: 100%; }
     #playlist .playlist-item .item-title {
-      color: #999; }
+      color: #999;
+      font-size: 14px;
+      line-height: 100%;
+      text-align: left;
+      padding-right: 35px; }
     #playlist .playlist-item.current, #playlist .playlist-item:hover {
       background: #222;
       cursor: pointer; }
@@ -117,19 +130,22 @@ ul li {
       right: 0;
       bottom: 0;
       width: 40px;
-      color: #555; }
+      color: #555;
+      background: #151515;
+      text-align: center;
+      z-index: 150; }
       #playlist .playlist-item .actions .remove-item, #playlist .playlist-item .actions .down-item, #playlist .playlist-item .actions .up-item {
-        padding: 5px;
-        background: #222; }
+        padding: 5px; }
         #playlist .playlist-item .actions .remove-item:hover, #playlist .playlist-item .actions .down-item:hover, #playlist .playlist-item .actions .up-item:hover {
           color: red;
           cursor: pointer; }
 
 #logo {
-  width: 50px; }
+  width: 30px; }
 
 #logo-container {
-  margin-bottom: 0; }
+  margin-bottom: 0;
+  font-size: 24px; }
 
 #search-results {
   padding: 0;
@@ -141,11 +157,10 @@ ul li {
   #search-results li {
     display: inline-block;
     width: 100%;
-    height: 50px;
     position: relative;
     vertical-align: top;
     text-align: left;
-    padding: 5px;
+    padding: 5px 0;
     margin: 0;
     border-left: 2px solid #DDD;
     border-right: 2px solid #DDD;
@@ -153,28 +168,27 @@ ul li {
     #search-results li.item-added {
       background: #D2ECCD; }
     #search-results li .search-result-image {
-      display: inline-block;
-      width: 35px;
-      margin-right: 10px; }
+      text-align: center; }
       #search-results li .search-result-image img {
         margin: 0;
+        width: 40px;
         max-width: 100%; }
     #search-results li .search-result-title {
+      line-height: 100%;
       display: inline-block;
-      font-weight: 800;
-      height: 100%;
       color: #333; }
     #search-results li:not(.item-added):hover {
-      background: #EEE;
+      background: #E5E5E5;
       cursor: pointer; }
 
 #player-container {
-  z-index: 900; }
+  z-index: 900;
+  max-height: 300px;
+  width: 100%; }
 
 #search-container {
   width: 100%;
   position: relative;
-  margin: 0 15px;
   margin-bottom: 20px; }
   #search-container #clear-results {
     position: absolute;

@@ -4,27 +4,29 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Youtube 2Gman :: Share music you love</title>
-    <meta name="description" content="Youtube 2Gman :: Share music you love">
+    <title>YoutubeSharelist :: Share music you love</title>
+    <meta name="description"
+          content="Simple tool for sharing youtube playlists. Create, share and edit your playlist with built-in search and realtime update.">
     <meta name="author" content="Zoka & Loce">
 
     <!--Favicons--->
-    <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/images/favicons/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/images/favicons/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16.png">
-    <link rel="manifest" href="/images/favicons/manifest.json">
+    <link rel="apple-touch-icon" sizes="57x57" href="./images/favicons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="./images/favicons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="./images/favicons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="./images/favicons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="./images/favicons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="./images/favicons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="./images/favicons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="./images/favicons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./images/favicons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="./images/favicons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="./images/favicons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./images/favicons/favicon-16x16.png">
+    <link href="./images/favicons/favicon.ico" rel="icon" type="image/x-icon"/>
+    <link rel="manifest" href="./images/favicons/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/images/favicons/ms-icon-144x144.png">
+    <meta name="msapplication-TileImage" content="./images/favicons/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
 
@@ -43,20 +45,20 @@
 <body>
 
 
-<div id="header" class="text-center">
-    <h1 id="logo-container">
-        <a href="./"><img id="logo" src="./images/headset.png"/></a>
-        YouTube<span class="red">2Gman</span></h1>
-    <small class="description">Share music you love...</small>
-</div>
-
 <div class="container">
     <div id="notification"></div>
 </div>
 
-<div id="main" class="container text-center">
+<div id="main" class="">
 
-    <div class="row">
+    <div class="text-center">
+        <div id="header" class="text-center">
+            <h1 id="logo-container">
+                <a href="./"><img id="logo" src="./images/headset.png"/></a>
+                YouTube<span class="red">Sharelist</span></h1>
+            <small class="description">Share music you love...</small>
+        </div>
+
         <div class="col-sm-5 main-box">
             <p>Create playlist</p>
             <input type="text" autocomplete="off" id="new-playlist-id" class="form-control input-search"
@@ -75,24 +77,15 @@
                    placeholder="Search for group...">
             <a href="javascript:void(0)" id="join-trigger" class="main-button btn-block col-centered ">Join</a>
         </div>
+
+        <div class="description">
+            Last playlist loaded:
+            <span id="last-playlist-id"></span>
+        </div>
     </div>
 
-    <div class="description">
-        Last playlist loaded:
-        <span id="last-playlist-id"></span>
-    </div>
-
+    <div class="partial" data-partial="footer.html"></div>
 </div>
-<footer>
-
-
-    <p class="description">Sharing music with friends since <a href="#">2015</a></p>
-
-    <div class="text-center">
-        <a href="#"><i class="fa fa-twitter fa-2x social-icon"></i></a>
-        <a href="#"><i class="fa fa-facebook fa-2x social-icon"></i></a>
-    </div>
-</footer>
 
 
 <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>

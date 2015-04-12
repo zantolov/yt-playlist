@@ -28,6 +28,7 @@ application = {
 
     init: function () {
 
+        this.loadPartials();
         this.setupRoutes();
         this.setupEvents();
 
@@ -52,6 +53,16 @@ application = {
                 }
             }, 100);
         }
+    },
+
+    loadPartials: function () {
+        $("div.partial").each(function () {
+            var elem = $(this);
+            var template = elem.attr('data-partial');
+            $.get('partials/' + template, function (data, status, xhr) {
+                elem.html(data);
+            });
+        });
     },
 
     setupRoutes: function () {
@@ -161,9 +172,9 @@ application = {
              "<div class=\"search-result-image\"><img src=\"" + video_image + "\"></div>" +
              "<div class=\"search-result-title\">" + video_title + "</div>" +
              "</li>";*/
-            var final = "<li class=\"result-item\" data-id=\"" + video_id + "\"\\>" +
-                "<div class=\"search-result-image\"><img src=\"" + video_image + "\"></div></div>" +
-                "<div class=\"search-result-title\">" + video_title + "</div>" +
+            var final = '<li class="result-item" data-id="' + video_id + '">' +
+                "<div class=\"col-xs-4 search-result-image\"><img src=\"" + video_image + "\"></div></div>" +
+                "<div class=\"col-xs-8 search-result-title\">" + video_title + "</div>" +
                 "</li>";
 
             $("#search-results").append(final);
@@ -197,17 +208,6 @@ application = {
             }
         }
 
-        //switch (hash) {
-        //    case '#join':
-        //        this.joinAction();
-        //        break;
-        //    case '#new':
-        //        this.newAction();
-        //        break;
-        //    case '#playlist':
-        //        this.playlistAction();
-        //        break;
-        //}
     },
 
     connect: function (ref) {
@@ -272,21 +272,25 @@ application = {
 
         var self = this;
         this.loadPage('playlist.html', function () {
+            self.loadPartials();
             self.setupSearch();
+
             $("#playlist-id").html(id);
             self.playlistid = id;
 
             self.getPlaylistConn().on('child_added', self.handleChildAdded);
 
             $('#youtube-video').keypress(function (e) {
+                var elem = $(this);
                 if (e.keyCode == 13) {
                     var url = $(this).val();
                     var code = youtube_parser(url);
 
                     if (code) {
-                        self.addToQueue(code);
-                        $(this).val('');
-
+                        $.getJSON('http://gdata.youtube.com/feeds/api/videos/' + code + '?v=2&alt=jsonc', function (data, status, xhr) {
+                            self.addToQueue(code, data.data.title);
+                            elem.val('');
+                        });
                     } else {
                         alert("That wasnt YT video");
                     }
@@ -326,16 +330,16 @@ application = {
             var id = this.queue[i].id;
             var actions = $('<div/>').addClass('actions')
                 .append('<div class="remove-item" data-id="' + id + '"><i class="fa fa-trash"></i></div>')
-                .append('<div class="up-item" data-id="' + id + '"><i class="fa fa-2x fa-arrow-up"></i></div>')
-                .append('<div class="down-item" data-id="' + id + '"><i class="fa fa-2x fa-arrow-down"></i></div>');
+                .append('<div class="up-item" data-id="' + id + '"><i class="fa fa-arrow-up"></i></div>')
+                .append('<div class="down-item" data-id="' + id + '"><i class="fa fa-arrow-down"></i></div>');
 
 
-            var title = $('<div/>').addClass('item-title').text(this.queue[i].title);
+            var title = $('<div/>').addClass('item-title').addClass('col-xs-8').text(this.queue[i].title);
 
 
             $('<li/>').addClass('playlist-item')
                 .attr({"data-id": id})
-                .html('<img src="http://img.youtube.com/vi/' + id + '/default.jpg">')
+                .html('<div class="col-xs-4"><img src="http://img.youtube.com/vi/' + id + '/default.jpg"></div>')
                 .append(actions)
                 .append(title)
                 .appendTo(parent);
@@ -383,13 +387,6 @@ application = {
         var item = new Item(id, title)
         this.queue.push(item);
         this.createPlaylistView();
-
-        //if (!this.isPlaying() && this.playerLoaded) {
-        //    console.log('play');
-        //    this.playNextVideoInQueue();
-        //}
-
-        //$('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
     },
 
     getPlaylistConn: function () {
@@ -421,9 +418,6 @@ application = {
     },
 
     random: function () {
-        // Math.random should be unique because of its seeding algorithm.
-        // Convert it to base 36 (numbers + letters), and grab the first 9 characters
-        // after the decimal.
         return Math.random().toString(36).substr(2, 9);
     },
 
@@ -546,7 +540,15 @@ application = {
 
         $('.playlist-item.current').removeClass('current');
         console.log('.playlist-item[data-id="' + code + '"]');
-        $('.playlist-item[data-id="' + code + '"]').addClass('current');
+        var currentPlaylistItem = $('.playlist-item[data-id="' + code + '"]');
+
+        currentPlaylistItem.addClass('current');
+
+        // Scroll to current item
+        $("#playlist-container").animate({scrollTop: $("#playlist-container").scrollTop() + currentPlaylistItem.offset().top}, {
+            duration: 'medium',
+            easing: 'swing'
+        });
 
         this.current = code;
         this.currentIndex = this.getIndexOf(this.current);
