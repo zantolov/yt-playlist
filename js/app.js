@@ -138,7 +138,7 @@ application = {
 
             var keyword = encodeURIComponent(searchValue);
             // Youtube API
-            var yt_url = 'http://gdata.youtube.com/feeds/api/videos?q=' + keyword + '&format=5&max-results=10&v=2&alt=jsonc';
+            var yt_url = '//gdata.youtube.com/feeds/api/videos?q=' + keyword + '&format=5&max-results=10&v=2&alt=jsonc';
 
             $.ajax
             ({
@@ -160,7 +160,7 @@ application = {
         });
 
         function getThumbnailByCode(code) {
-            return 'http://img.youtube.com/vi/' + code + '/default.jpg';
+            return '//img.youtube.com/vi/' + code + '/default.jpg';
         }
 
         function createResultEntry(data) {
@@ -287,7 +287,7 @@ application = {
                     var code = youtube_parser(url);
 
                     if (code) {
-                        $.getJSON('http://gdata.youtube.com/feeds/api/videos/' + code + '?v=2&alt=jsonc', function (data, status, xhr) {
+                        $.getJSON('//gdata.youtube.com/feeds/api/videos/' + code + '?v=2&alt=jsonc', function (data, status, xhr) {
                             self.addToQueue(code, data.data.title);
                             elem.val('');
                         });
@@ -298,7 +298,7 @@ application = {
             });
 
             var tag = document.createElement('script');
-            tag.src = "https://www.youtube.com/iframe_api?enablejsapi=1";
+            tag.src = "//www.youtube.com/iframe_api?enablejsapi=1";
             var firstScriptTag = document.getElementsByTagName('script')[0];
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
         });
@@ -339,7 +339,7 @@ application = {
 
             $('<li/>').addClass('playlist-item')
                 .attr({"data-id": id})
-                .html('<div class="col-xs-4"><img src="http://img.youtube.com/vi/' + id + '/default.jpg"></div>')
+                .html('<div class="col-xs-4"><img src="//img.youtube.com/vi/' + id + '/default.jpg"></div>')
                 .append(actions)
                 .append(title)
                 .appendTo(parent);
