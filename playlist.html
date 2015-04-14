@@ -19,8 +19,52 @@
     </div>
 
     <div id="player-container"></div>
-    <div class="clearfix"></div>
+    <div class="info-container">
+        <h3 id="song-name"></h3>
+
+        <div class="social-container">
+            <a href="https://twitter.com/share" class="social-share-button twitter" data-dnt="true"><i
+                    class="fa fa-twitter"></i> Tweet</a>
+            <script>!function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
+                if (!d.getElementById(id)) {
+                    js = d.createElement(s);
+                    js.id = id;
+                    js.src = p + '://platform.twitter.com/widgets.js';
+                    fjs.parentNode.insertBefore(js, fjs);
+                }
+            }(document, 'script', 'twitter-wjs');</script>
+
+
+            <a href="javascript:void(0)" id=facebook-share class="social-share-button facebook">
+                <i class="fa fa-facebook"></i> Share on facebook</a>
+        </div>
+    </div>
+    <!--footer-->
     <div class="partial" data-partial="footer.html"></div>
+
+    <script>
+        $("#facebook-share").click(function () {
+            var title = $('#playlist-id').text()
+            FB.ui(
+                    {
+                        method: 'feed',
+                        name: 'Check out ' + title,
+                        link: window.location.href,
+                        picture: 'https://sharelist.github.io/images/headset.png',
+                        caption: 'Playlist code:  ' + title,
+                        description: 'YTSharelist :: Create, share and edit playlist in real time. Share music you love!'
+                    },
+                    function (response) {
+                        if (response && response.post_id) {
+                            alert('Post was published.');
+                        } else {
+                            alert('Post was not published.');
+                        }
+                    }
+            );
+        });
+    </script>
 </div>
 
 <div id="playlist-container" class="col-md-4 col-lg-3">

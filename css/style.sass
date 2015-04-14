@@ -13,13 +13,16 @@ $green: #2ecc71
 $black: #000
 $light-gray: #E6E6E6
 
+$facebook-blue: #4A66A7
+$twitter-blue: #00A0D1
+
 body
   font-family: Roboto, "Helvetica Neue", sans-serif
   background: #fafafa
 
 a:hover
   text-decoration: none
-  color: $white
+  color: $yt-red
 
 .red
   color: $yt-red
@@ -64,6 +67,41 @@ a:hover
     color: $white
     text-decoration: none
     background-color: #FF5746
+
+.social-container
+  margin-top: 20px
+
+.social-share-button
+  color: $white
+  display: inline
+  margin: 30px 0
+  text-align: center
+
+  width: 150px
+  height: 60px
+  padding: 10px
+
+  &.btn-block
+    width: 100%
+
+  &:hover &:visited &:active
+    color: $black
+    text-decoration: none
+    background-color: $light-gray
+
+.facebook
+  background-color: $facebook-blue
+  cursor: pointer
+  &:hover, &:active, &:visited
+    color: $white
+    background-color: #5F75A8
+
+.twitter
+  cursor: pointer
+  background-color: $twitter-blue
+  &:hover, &:active, &:visited
+    color: $white
+    background-color: #0085AE
 
 //search input field
 .input-search
@@ -121,13 +159,20 @@ footer
   margin-bottom: 20px
   font-size: 14px
 
-.description
+  a
+    color: #4A9DF6
+    text-decoration: none
+
+.description .fb-row
   text-align: center
   color: $gray
   transition: opacity 0.3s ease
   a
     color: #4A9DF6
     text-decoration: none
+
+.fb-row
+  margin-top: 30px
 
 .social-icon
   color: $black
@@ -201,7 +246,7 @@ footer
 
 #logo-container
   margin-bottom: 0
-  font-size: 24px
+  font-size: 30px
 
 #search-results
   padding: 0

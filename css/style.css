@@ -5,7 +5,7 @@ body {
 
 a:hover {
   text-decoration: none;
-  color: #FFFFFF; }
+  color: #dd2826; }
 
 .red {
   color: #dd2826; }
@@ -42,6 +42,38 @@ a:hover {
     color: #FFFFFF;
     text-decoration: none;
     background-color: #FF5746; }
+
+.social-container {
+  margin-top: 20px; }
+
+.social-share-button {
+  color: #FFFFFF;
+  display: inline;
+  margin: 30px 0;
+  text-align: center;
+  width: 150px;
+  height: 60px;
+  padding: 10px; }
+  .social-share-button.btn-block {
+    width: 100%; }
+  .social-share-button:hover .social-share-button:visited .social-share-button:active {
+    color: #000;
+    text-decoration: none;
+    background-color: #E6E6E6; }
+
+.facebook {
+  background-color: #4A66A7;
+  cursor: pointer; }
+  .facebook:hover, .facebook:active, .facebook:visited {
+    color: #FFFFFF;
+    background-color: #5F75A8; }
+
+.twitter {
+  cursor: pointer;
+  background-color: #00A0D1; }
+  .twitter:hover, .twitter:active, .twitter:visited {
+    color: #FFFFFF;
+    background-color: #0085AE; }
 
 .input-search {
   margin: 10px 0 21px 0;
@@ -91,14 +123,20 @@ footer {
   margin-top: 70px;
   margin-bottom: 20px;
   font-size: 14px; }
+  footer a {
+    color: #4A9DF6;
+    text-decoration: none; }
 
-.description {
+.description .fb-row {
   text-align: center;
   color: #999;
   transition: opacity 0.3s ease; }
-  .description a {
+  .description .fb-row a {
     color: #4A9DF6;
     text-decoration: none; }
+
+.fb-row {
+  margin-top: 30px; }
 
 .social-icon {
   color: #000; }
@@ -166,7 +204,7 @@ footer {
 
 #logo-container {
   margin-bottom: 0;
-  font-size: 24px; }
+  font-size: 30px; }
 
 #search-results {
   padding: 0;

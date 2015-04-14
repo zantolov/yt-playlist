@@ -167,11 +167,6 @@ application = {
             var video_id = data.id;
             var video_title = data.title;
             var video_image = getThumbnailByCode(data.id);
-
-            /*var final = "<li class=\"result-item\" data-id=\"" + video_id + "\"\\>" +
-             "<div class=\"search-result-image\"><img src=\"" + video_image + "\"></div>" +
-             "<div class=\"search-result-title\">" + video_title + "</div>" +
-             "</li>";*/
             var final = '<li class="result-item" data-id="' + video_id + '">' +
                 "<div class=\"col-xs-4 search-result-image\"><img src=\"" + video_image + "\"></div></div>" +
                 "<div class=\"col-xs-8 search-result-title\">" + video_title + "</div>" +
@@ -350,6 +345,7 @@ application = {
             e.preventDefault();
             e.stopPropagation();
             var code = $(this).attr('data-id');
+
             self.playVideoByCode(code);
         });
 
@@ -540,8 +536,12 @@ application = {
 
         $('.playlist-item.current').removeClass('current');
         console.log('.playlist-item[data-id="' + code + '"]');
-        var currentPlaylistItem = $('.playlist-item[data-id="' + code + '"]');
 
+        //get curr song title
+        var song_title = $('.playlist-item[data-id="' + code + '"] .item-title').text();
+        $('#song-name').text(song_title);
+
+        var currentPlaylistItem = $('.playlist-item[data-id="' + code + '"]');
         currentPlaylistItem.addClass('current');
 
         // Scroll to current item
@@ -614,6 +614,9 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
+
+
+//sticky footer
 $(window).bind("load", function () {
     var footer = $(".footer");
     var pos = footer.position();

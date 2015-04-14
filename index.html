@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>YoutubeSharelist :: Share music you love</title>
+    <title>YouTube Sharelist :: Share music you love</title>
     <meta name="description"
           content="Simple tool for sharing youtube playlists. Create, share and edit your playlist with built-in search and realtime update.">
     <meta name="author" content="Zoran Antolović & Lovro Predovan">
@@ -20,19 +20,22 @@
     <meta name="application-name" content=""/>
 
     <!-- for Facebook -->
-    <meta property="og:title" content="YouTubeSharelist"/>
-    <meta property="og:type" content="article"/>
-    <meta property="og:image" content="http://zantolov.github.io/yt-playlist/images/ytshareplaylist.jpg"/>
-    <meta property="og:url" content="http://zantolov.github.io/yt-playlist/"/>
+    <meta property="fb:app_id" content="1417313218577598"/>
+    <meta property="og:site_name" content="YouTube Sharelist"/>
+
+    <meta property="og:title" content="YouTube Sharelist"/>
+    <meta property="og:type" content="playlist"/>
+    <meta property="og:image" content="https://sharelist.github.io/images/ytshareplaylist.jpg"/>
+    <meta property="og:url" content="https://sharelist.github.io/"/>
     <meta property="og:description"
           content="Simple tool for sharing youtube playlists. Create, share and edit your playlist with built-in search and realtime update."/>
 
     <!-- for Twitter -->
     <meta name="twitter:card" content="summary"/>
-    <meta name="twitter:title" content="YouTubeSharelist"/>
+    <meta name="twitter:title" content="YouTube Sharelist"/>
     <meta name="twitter:description"
           content="Simple tool for sharing youtube playlists. Create, share and edit your playlist with built-in search and realtime update."/>
-    <meta name="twitter:image" content="http://zantolov.github.io/yt-playlist/images/ytshareplaylist.jpg"/>
+    <meta name="twitter:image" content="https://sharelist.github.io/images/ytshareplaylist.jpg"/>
 
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="57x57" href="./images/favicons/apple-icon-57x57.png">
@@ -68,6 +71,32 @@
 <body>
 
 
+<!--FB--->
+<div id="fb-root"></div>
+<script>
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '1417313218577598',
+            xfbml: true,
+            version: 'v2.3'
+        });
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!--FB end-->
+
+
 <div class="container">
     <div id="notification"></div>
 </div>
@@ -78,7 +107,7 @@
         <div id="header" class="text-center">
             <h1 id="logo-container">
                 <a href="./"><img id="logo" src="./images/headset.png"/></a>
-                YouTube<span class="red">Sharelist</span></h1>
+                YouTube<span class="red"> Sharelist</span></h1>
             <small class="description">Share the music you love...</small>
         </div>
 
@@ -99,13 +128,21 @@
             <div class="col-sm-5 main-box">
                 <p>Join existing playlist</p>
                 <input type="text" autocomplete="off" id="join-id" class="form-control input-search"
-                       placeholder="Search for group...">
+                       placeholder="Search for playlist">
                 <a href="javascript:void(0)" id="join-trigger" class="main-button btn-block col-centered ">Join</a>
             </div>
 
+            <!--Last playlist--->
             <div class="description">
-                Last playlist loaded:
-                <span id="last-playlist-id"></span>
+                <p>Last playlist loaded:
+                    <span id="last-playlist-id"></span>
+                </p>
+            </div>
+
+            <!--FB-->
+            <div class="fb-row">
+                <div class="fb-like" data-href="https://www.facebook.com/ytsharelist?fref=ts" data-width="300"
+                     data-layout="standard" data-action="like" data-show-faces="true" data-share="false"></div>
             </div>
         </div>
     </div>
