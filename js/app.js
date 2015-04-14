@@ -148,7 +148,15 @@ application = {
                 success: function (response) {
                     clearResults();
                     if (response.data.items) {
-                        $.each(response.data.items, function (i, data) {
+                        $.each(response.data.items, function (j, data) {
+                            var id = data.id;
+
+                            for (var i = 0; i < self.queue.length; i++) {
+                                if (id == self.queue[i].id) {
+                                    return; // Ignore added videos
+                                }
+                            }
+
                             createResultEntry(data)
                         });
                     }
@@ -206,7 +214,7 @@ application = {
     },
 
     connect: function (ref) {
-        ref = ref || ''
+        ref = ref || '';
         this.con = new Firebase(this.base + ref);
         return this.con;
     },
@@ -274,23 +282,6 @@ application = {
             self.playlistid = id;
 
             self.getPlaylistConn().on('child_added', self.handleChildAdded);
-
-            $('#youtube-video').keypress(function (e) {
-                var elem = $(this);
-                if (e.keyCode == 13) {
-                    var url = $(this).val();
-                    var code = youtube_parser(url);
-
-                    if (code) {
-                        $.getJSON('//gdata.youtube.com/feeds/api/videos/' + code + '?v=2&alt=jsonc', function (data, status, xhr) {
-                            self.addToQueue(code, data.data.title);
-                            elem.val('');
-                        });
-                    } else {
-                        alert("That wasnt YT video");
-                    }
-                }
-            });
 
             var tag = document.createElement('script');
             tag.src = "//www.youtube.com/iframe_api?enablejsapi=1";
@@ -378,8 +369,6 @@ application = {
     },
 
     addVideoToPlaylist: function (id, title) {
-        console.log('addVideoToPlaylist');
-
         var item = new Item(id, title)
         this.queue.push(item);
         this.createPlaylistView();
@@ -599,7 +588,6 @@ function onYouTubeIframeAPIReady() {
         },
         events: {
             'onReady': function () {
-                console.log('YT Ready');
                 application.playNextVideoInQueue();
                 application.playerLoaded = true;
 
